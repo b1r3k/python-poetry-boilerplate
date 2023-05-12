@@ -15,13 +15,12 @@ Included in this boilerplate:
 ## How to start
 
 1. Make sure you have python required interpreter installed in pyenv e.g.
-2. Rename app folder to your app name if needed and then:
+2. Rename app folder to your app name if needed (`mv app_name new_app_name`) and then:
 
        find ./ -type f -not -path "./.git/*" -exec sed -i 's/app_name/new_app_name/g' {} \;
        find ./ -type f -not -path "./.git/*" -exec sed -i 's/app-name/new-app-name/g' {} \;
 
-3. mv app_name new_app_name
-4. `make install`
-5. `make test`
-6. Make sure it's working: `poetry run app-cli "Developer"`
-7. Optionally, squeeze history into one commit: `git reset $(git commit-tree HEAD^{tree} -m "Initial commit")`
+3. `make install`
+4. `make test`
+5. Make sure it's working: `poetry run app-cli "Developer"`
+6. Optionally, squeeze history into one commit: `git reset $(git commit-tree HEAD^{tree} -m "Initial commit")`
