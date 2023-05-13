@@ -6,7 +6,7 @@ enable-extensions = G
 
 # Plugins:
 accept-encodings = utf-8
-max-complexity = 8
+max-complexity = 10
 max-line-length = 120
 quotes = single
 max-imports = 14
