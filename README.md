@@ -25,3 +25,18 @@ Included in this boilerplate:
 4. `make test`
 5. Make sure it's working: `poetry run app-cli "Developer"`
 6. Optionally, squeeze history into one commit: `git reset $(git commit-tree HEAD^{tree} -m "Initial commit")`
+
+## Other useful commands
+
+ - Check current poetry virtualenv and change it
+
+   $ poetry env info
+   $ poetry env list
+   $ poetry env remove /home/PATH/bin/python
+   $ make install
+
+ - Cherry-pick commit from repository cloned from this one:
+
+   $ git remote add projectB /home/you/projectB
+   $ git fetch projectB
+   $ git cherry-pick <commit from projectB repo>
