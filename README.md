@@ -30,13 +30,17 @@ Included in this boilerplate:
 
  - Check current poetry virtualenv and change it
 
+```bash
    $ poetry env info
    $ poetry env list
    $ poetry env remove /home/PATH/bin/python
    $ make install
+```
 
  - Cherry-pick commit from repository cloned from this one:
 
+```bash
    $ git remote add projectB /home/you/projectB
    $ git fetch projectB
    $ git cherry-pick <commit from projectB repo>
+```
