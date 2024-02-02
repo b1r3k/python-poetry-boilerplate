@@ -16,10 +16,12 @@ Included in this boilerplate:
 ## How to start
 
 1. Make sure you have python required interpreter installed in pyenv e.g.
-2. Rename app folder to your app name if needed (`mv app_name new_app_name`) and then:
+2. Rename project:
+ - Rename app folder to your app name if needed (`mv app_name new_app_name`) and then:
 
        find ./ -type f -not -path "./.git/*" -exec sed -i 's/app_name/new_app_name/g' {} \;
        find ./ -type f -not -path "./.git/*" -exec sed -i 's/app-name/new-app-name/g' {} \;
+ - or use `make rename-project NEW_APP_NAME=new_app_name` to do it for you
 
 3. `make install`
 4. `make test`
