@@ -1,3 +1,5 @@
+[![CI](https://github.com/b1r3k/python-poetry-boilerplate/actions/workflows/ci.yaml/badge.svg)](https://github.com/b1r3k/python-poetry-boilerplate/actions/workflows/ci.yaml)
+
 # Modern python app boilerplate
 
 Included in this boilerplate:
