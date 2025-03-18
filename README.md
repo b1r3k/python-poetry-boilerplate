@@ -1,16 +1,19 @@
+[![CI](https://github.com/b1r3k/python-poetry-boilerplate/actions/workflows/ci.yaml/badge.svg)](https://github.com/b1r3k/python-poetry-boilerplate/actions/workflows/ci.yaml)
+
 # Modern python app boilerplate
 
 Included in this boilerplate:
 
- - pyenv for python version management
+ - [pyenv](https://github.com/pyenv/pyenv) for python version management
  - [poetry](https://python-poetry.org/) for dependency management integrated with pyenv
  - [pre-commit](https://pre-commit.com/) for linting and formatting
  - [pytest](https://docs.pytest.org/en/stable/) for testing
- - [black]() for formatting
- - [flake8]() for linting
- - [isort]() for sorting imports
- - [mypy]() for static type checking
- - virtualenv created by poetry resides in `.venv` folder
+ - [ruff](https://docs.astral.sh/ruff/) for formatting, linting, sorting imports etc.
+ - [mypy](https://mypy.readthedocs.io/en/stable/) for static type checking
+
+## What is going on?
+
+Pyenv selects python version according to .python-version file in the root of the project. Poetry creates virtualenv in .venv directory in the root of the project. Pre-commit installs hooks in .git/hooks folder. Ruff is used by pre-commit to format, lint, sort imports etc.
 
 
 ## How to start

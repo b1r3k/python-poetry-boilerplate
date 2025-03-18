@@ -16,11 +16,10 @@ testloop:
 	watch -n 3 poetry run pytest ${PYTEST_FLAGS}
 
 lint-fix:
-	poetry run isort --profile black .
-	poetry run black ${APP_DIR}
+	poetry run ruff check --fix .
 
 lint-check:
-	poetry run flake8 ${APP_DIR}
+	poetry run ruff check ${APP_DIR}
 	poetry run mypy .
 
 
