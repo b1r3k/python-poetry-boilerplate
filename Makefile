@@ -22,6 +22,10 @@ lint-check:
 	poetry run ruff check ${APP_DIR}
 	poetry run mypy .
 
+sync-version:
+	echo '__version__ = "$(APP_VERSION)"' > $(APP_DIR)/version.py
+	git add $(APP_DIR)/version.py pyproject.toml
+	git commit -m "Synced version to $(APP_VERSION)" || true
 
 rename-project: NEW_APP_DIR :=$(shell echo ${NEW_APP_NAME} | tr '-' '_')
 rename-project: APP_NAME := $(shell echo ${APP_DIR} | tr '_' '-')
