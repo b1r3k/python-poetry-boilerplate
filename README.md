@@ -50,3 +50,20 @@ Pyenv selects python version according to .python-version file in the root of th
    $ git fetch projectB
    $ git cherry-pick <commit from projectB repo>
 ```
+
+## Working with docker compose
+
+Run only selected service from docker compose definition:
+
+    $ docker compose run --service-ports cockroachdb /bin/bash
+
+More details about setup: [Securely Using SSH Keys in Docker to Access Private Github Repositories - FastRuby.io | Rails Upgrade Service](https://www.fastruby.io/blog/docker/docker-ssh-keys.html)
+
+If worker service in docker compose needs to have image rebuild:
+
+    $ docker compose up --build --force-recreate --no-deps web-worker
+
+
+Stopping and removing volumes:
+
+    $ docker compose down --volumes
