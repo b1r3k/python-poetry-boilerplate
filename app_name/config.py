@@ -18,7 +18,7 @@ class GlobalSettings(BaseSettings):
     APP_NAME: str
 
 
-settings = GlobalSettings()
+settings = GlobalSettings()  # type: ignore[call-arg]
 
 
 LOGGING_CONFIG = {
