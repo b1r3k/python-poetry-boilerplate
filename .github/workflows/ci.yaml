@@ -40,6 +40,9 @@ jobs:
         run: |
           python -m poetry run ruff check
           python -m poetry run mypy .
+      - name: Create .env file
+        run: |
+          mv .env.example .env
       - name: Test
         run: python -m poetry run pytest
         env:
