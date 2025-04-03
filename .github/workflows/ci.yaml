@@ -16,7 +16,7 @@ jobs:
       matrix:
         python-version:
           - "3.12"
-          - "3.11"
+          - "3.13"
       fail-fast: false
 
     steps:
@@ -40,6 +40,9 @@ jobs:
         run: |
           python -m poetry run ruff check
           python -m poetry run mypy .
+      - name: Create .env file
+        run: |
+          mv .env.example .env
       - name: Test
         run: python -m poetry run pytest
         env:
