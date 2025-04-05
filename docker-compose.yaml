@@ -6,7 +6,7 @@ services:
         image: cockroachdb/cockroach:v25.1.2
         volumes:
             - cockroach-data:/cockroach/cockroach-data
-            - ./local/database/certs:/cockroach/cockroach-certs
+            - ./docker/cockroachdb/certs:/cockroach/cockroach-certs
         entrypoint: ["/bin/bash", "-c"]
         command:
             - |
@@ -32,7 +32,7 @@ services:
             - "36257:36257"
         volumes:
             - cockroach-data:/cockroach/cockroach-data
-            - ./local/database/certs:/cockroach/cockroach-certs
+            - ./docker/cockroachdb/certs:/cockroach/cockroach-certs
         healthcheck:
             test: "curl --silent --fail http://localhost:8080/health?ready=1 > /dev/null || exit 1"
             interval: 10s
@@ -48,7 +48,7 @@ services:
         image: cockroachdb/cockroach:v25.1.2
         volumes:
             - cockroach-data:/cockroach/cockroach-data
-            - ./local/database/certs:/cockroach/cockroach-certs
+            - ./docker/cockroachdb/certs:/cockroach/cockroach-certs
         entrypoint: ["/bin/bash", "-c"]
         command:
             - |
@@ -60,7 +60,7 @@ services:
                 condition: service_healthy
         restart: no
 
-    web-worker:
+    database-migrations:
         build:
             context: .
             ssh:
@@ -76,8 +76,25 @@ services:
         environment:
             APP_NAME: ${APP_NAME}
             DATABASE_URL: cockroachdb+asyncpg://app_name:appname@cockroachdb:26257/app_name
-        command:
-            - /bin/bash
-            - -c
-            - |
-                poetry run alembic upgrade head
+        command: poetry run alembic upgrade head
+        restart: no
+
+    web-worker:
+        build:
+            context: .
+            ssh:
+                - default
+            dockerfile: Dockerfile
+        depends_on:
+            cockroachdb:
+                condition: service_healthy
+            cockroachdb-db-init:
+                condition: service_completed_successfully
+            database-migrations:
+                condition: service_completed_successfully
+        env_file:
+            - .env
+        environment:
+            APP_NAME: ${APP_NAME}
+            DATABASE_URL: cockroachdb+asyncpg://app_name:appname@cockroachdb:26257/app_name
+        command: poetry run app-cli
