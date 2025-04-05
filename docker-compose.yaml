@@ -1,0 +1,83 @@
+volumes:
+    cockroach-data: {}
+
+services:
+    cockroachdb-cert-init:
+        image: cockroachdb/cockroach:v25.1.2
+        volumes:
+            - cockroach-data:/cockroach/cockroach-data
+            - ./local/database/certs:/cockroach/cockroach-certs
+        entrypoint: ["/bin/bash", "-c"]
+        command:
+            - |
+                if [ ! -f /cockroach/cockroach-certs/ca.key ]; then
+                    echo "Creating CA certificate"
+                    cockroach cert create-ca --certs-dir=/cockroach/cockroach-certs --ca-key=/cockroach/cockroach-certs/ca.key
+                fi
+                if [ ! -f /cockroach/cockroach-certs/node.key ]; then
+                    echo "Creating node certificate"
+                    cockroach cert create-node localhost 127.0.0.1 cockroachdb cockroachdb-init --certs-dir=/cockroach/cockroach-certs --ca-key=/cockroach/cockroach-certs/ca.key
+                fi
+                if [ ! -f /cockroach/cockroach-certs/client.root.crt ]; then
+                    echo "Creating client certificate"
+                    cockroach cert create-client root --certs-dir=/cockroach/cockroach-certs --ca-key=/cockroach/cockroach-certs/ca.key
+                fi
+        restart: no
+
+    cockroachdb:
+        image: cockroachdb/cockroach:v25.1.2
+        ports:
+            - "8080:8080"
+            - "26257:26257"
+            - "36257:36257"
+        volumes:
+            - cockroach-data:/cockroach/cockroach-data
+            - ./local/database/certs:/cockroach/cockroach-certs
+        healthcheck:
+            test: "curl --silent --fail http://localhost:8080/health?ready=1 > /dev/null || exit 1"
+            interval: 10s
+            retries: 3
+            start_period: 5s
+            timeout: 1s
+        command: start-single-node --certs-dir=/cockroach/cockroach-certs
+        depends_on:
+            cockroachdb-cert-init:
+                condition: service_completed_successfully
+
+    cockroachdb-db-init:
+        image: cockroachdb/cockroach:v25.1.2
+        volumes:
+            - cockroach-data:/cockroach/cockroach-data
+            - ./local/database/certs:/cockroach/cockroach-certs
+        entrypoint: ["/bin/bash", "-c"]
+        command:
+            - |
+                cockroach sql --certs-dir=/cockroach/cockroach-certs -u root --host='cockroachdb:26257' -e "CREATE DATABASE IF NOT EXISTS app_name;"
+                cockroach sql --certs-dir=/cockroach/cockroach-certs -u root --host='cockroachdb:26257' -e "CREATE USER IF NOT EXISTS app_name WITH PASSWORD 'appname';"
+                cockroach sql --certs-dir=/cockroach/cockroach-certs -u root --host='cockroachdb:26257' -e "GRANT ALL ON DATABASE app_name TO app_name;"
+        depends_on:
+            cockroachdb:
+                condition: service_healthy
+        restart: no
+
+    web-worker:
+        build:
+            context: .
+            ssh:
+                - default
+            dockerfile: Dockerfile
+        depends_on:
+            cockroachdb:
+                condition: service_healthy
+            cockroachdb-db-init:
+                condition: service_completed_successfully
+        env_file:
+            - .env
+        environment:
+            APP_NAME: ${APP_NAME}
+            DATABASE_URL: cockroachdb+asyncpg://app_name:appname@cockroachdb:26257/app_name
+        command:
+            - /bin/bash
+            - -c
+            - |
+                poetry run alembic upgrade head

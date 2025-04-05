@@ -16,6 +16,7 @@ class GlobalSettings(BaseSettings):
     DEBUG: bool = False
     # required
     APP_NAME: str
+    DATABASE_URL: str
 
 
 settings = GlobalSettings()  # type: ignore[call-arg]
