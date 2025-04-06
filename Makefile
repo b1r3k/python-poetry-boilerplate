@@ -38,3 +38,6 @@ rename-project:
 
 
 lint: lint-fix lint-check
+
+migration:
+	poetry run alembic revision --autogenerate
