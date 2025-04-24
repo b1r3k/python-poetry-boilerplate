@@ -1,0 +1,14 @@
+.env*
+.venv
+scripts
+doc
+.idea
+temp
+*.iml
+docker/
+keys/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+tests/
