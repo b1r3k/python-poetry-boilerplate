@@ -38,3 +38,8 @@ rename-project:
 
 
 lint: lint-fix lint-check
+
+clean:
+	rm -rf __pycache__ .pytest_cache .mypy_cache .ruff_cache .coverage .coverage.*
+	find . -name "*.orig" -type f -delete
+	find . -name "*.pyc" -type f -delete
