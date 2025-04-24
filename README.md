@@ -10,7 +10,7 @@ Included in this boilerplate:
  - [pytest](https://docs.pytest.org/en/stable/) for testing
  - [ruff](https://docs.astral.sh/ruff/) for formatting, linting, sorting imports etc.
  - [mypy](https://mypy.readthedocs.io/en/stable/) for static type checking
- - settings management implemented using [pydantic/pydantic-settings](https://github.com/pydantic/pydantic-settings) allows overriding settings values by environment variables, .env file etc.
+ - [pydantic/pydantic-settings](https://github.com/pydantic/pydantic-settings) for settings management using pydantic, allows overriding settings values by environment variables
  - root logger based on settings
 
 ## What is going on?
