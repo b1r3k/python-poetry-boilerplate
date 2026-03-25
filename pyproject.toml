@@ -9,6 +9,10 @@ packages = [{include = "app_name"}]
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic-settings = "^2.8.1"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.0"}
+alembic = "^1.15.2"
+asyncpg = "^0.30.0"
+sqlalchemy-cockroachdb = "^2.0.2"
 
 [build-system]
 requires = ["poetry-core"]

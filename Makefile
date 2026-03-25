@@ -39,6 +39,9 @@ rename-project:
 
 lint: lint-fix lint-check
 
+migration:
+	poetry run alembic revision --autogenerate
+
 clean:
 	rm -rf __pycache__ .pytest_cache .mypy_cache .ruff_cache .coverage .coverage.*
 	find . -name "*.orig" -type f -delete

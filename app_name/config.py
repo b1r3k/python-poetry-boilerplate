@@ -16,6 +16,8 @@ class GlobalSettings(BaseSettings):
     DEBUG: bool = False
     # required
     APP_NAME: str
+    DATABASE_URL: str
+    DATABASE_SSL_MODE: str = "disable"
 
 
 settings = GlobalSettings()  # type: ignore[call-arg]
